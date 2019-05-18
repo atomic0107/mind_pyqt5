@@ -65,7 +65,6 @@ class EditWidget(QWidget):
         self.set_qbtn_noline("key")
         #self.write_text()
         self.show()
-    
 
     def set_qbtn(self):
         global dic
@@ -77,15 +76,14 @@ class EditWidget(QWidget):
         qbtn.move( 50, 50 )# ボタンの位置設定
         pprint.pprint(dic)
         print("dic print!!")
-        keys = dic["root"].keys()
+        keys = dic["0"].keys()
         keys_len = len(keys)
         print("key len = " + str(keys_len))
         i = 0
-        for dic_key in dic["root"].keys():
+        for dic_key in dic["0"]["child"].keys():
             i += 1
             #print(dic["root"][dic_key]["parent"])
-            
-            text = dic["root"][dic_key]["parent"]
+            text = dic["0"]["child"][dic_key]["parent"]
             qbtn = QExtPushButton( text, self )# ボタン作成
             qbtn.move( 50, 50 + i*20 )# ボタンの位置設定
 
@@ -138,7 +136,7 @@ class Mind():
     def mind_print(self):
         print("hello my mind world!!")
         pprint.pprint(self.mind_dic)
-        print(len(self.mind_dic["root"]))
+        print(len(self.mind_dic))
 
 if __name__ == "__main__":
 

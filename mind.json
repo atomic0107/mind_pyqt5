@@ -1,17 +1,25 @@
 {
     "0": {
         "parent": "root",
+        "position":["0"],
         "child": {
-            "1": {
+            "0": {
                 "parent": "udagawa",
+                "position":["0","0"],
+                "child": {
+                    "parent": "tomohiro",
+                    "position":["0","0","0"],
+                    "child": {}
+                }
+            },
+            "1": {
+                "parent": "tomohiro",
+                "position":["0","1"],
                 "child": {}
             },
             "2": {
-                "parent": "tomohiro",
-                "child": {}
-            },
-            "3": {
                 "parent": "sawako",
+                "position":["0","2"],
                 "child": {}
             }
         }

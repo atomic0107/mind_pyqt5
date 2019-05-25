@@ -9,22 +9,22 @@ center_x = bd_width/2
 center_y = bd_height/2
 dic = {}
 
-class Mindobj(tkinter.Label):
+class Mindobj():
     md_dict={}
     posx=0
     posy=0
-
-    def __init__(self,master=None,cnf={},**kw):
+    def __init__(self,name):
         # super(Mindobj,self).__init__(md_dict)
-        tkinter.Label.__init__(self,master,cnf,**kw)
-        self.bind('<Button-1>',self.mindobj_print)
-        self.bind('<Double-Button-1>',self.edit_label)
+        self.name = tkinter.StringVar()
+        self.name.set(name) 
+        self.lbl=tkinter.Label(textvariable = self.name)
+        self.lbl.bind('<Button-1>',self.mindobj_print)
+        self.lbl.bind('<Double-Button-1>',self.edit_label)
 
     def mindobj_print(self,event):
         print("click mind obj")
     
     def edit_label(self,event):
-        
         self.temp_label = event.widget
         print("#### edit label ####")
         edit_x = event.widget.winfo_x()
@@ -36,11 +36,15 @@ class Mindobj(tkinter.Label):
         editbox.bind( '<Return>', self.update_label )#enter key
     
     def update_label(self,event):
-        
         text = event.widget.get()
         event.widget.destroy()
-        self.temp_label[u"text"] = text
-        print(text)
+        print(self.md_dict)
+        
+        #vtext = self.md_dict["parent"] + "　→　" + text
+        self.md_dict["parent"] = text
+        self.name.set(text)
+        pprint.pprint(self.md_dict)
+        pprint.pprint(dic)
 
     def child_print(self):
         pprint.pprint(self.md_dict)
@@ -50,8 +54,9 @@ class Mindobj(tkinter.Label):
             for i in range(len(self.md_dict["child"])):
                 cy = self.posy + i*25
                 cx = self.posy + 100
-                mdo = Mindobj(text = self.md_dict["child"][str(i)]["parent"])
-                mdo.place( x = cx ,y = cy )
+                mdo = Mindobj(self.md_dict["child"][str(i)]["parent"])
+                mdo.md_dict = self.md_dict["child"][str(i)]
+                mdo.lbl.place( x = cx ,y = cy )
 
 
 class Mind():
@@ -89,12 +94,12 @@ def set_Mindobj(dict):
             print(child_mind_dic[str(k)])
             set_Mindobj(child_mind_dic[str(k)]["child"])
     """
-    mdo = Mindobj(text = mind_dic[str(i)]["parent"])
+    mdo = Mindobj(mind_dic[str(i)]["parent"])
     mdo.posy = center_y + i * 25
     mdo.posx = center_x + j
     mdo.md_dict = mind_dic[str(i)]
     mdo.child_print()
-    mdo.place( x = mdo.posx ,y = mdo.posy )
+    mdo.lbl.place( x = mdo.posx ,y = mdo.posy )
     mdo.birth_child()
 
 
@@ -102,7 +107,8 @@ def main():
     global dic
     root = tkinter.Tk()
     root.title("tkinter test")
-    root.geometry("500x500")
+    root.geometry( str(bd_width) + "x" + str(bd_height))
+    canvas = tkinter.Canvas(root, width = bd_width, height = bd_height)
     set_Mindobj(dic)
     root.mainloop()
 

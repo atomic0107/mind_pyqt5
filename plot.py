@@ -24,7 +24,7 @@ def main():
 
 
     print("matplotlib")
-    x = np.arange(-15,15,1)
+    x = np.arange(-25,25,1)
     #a = [-4,2, 4]
     a = [ -1]#yseppen ywidth
     b = [ 1]#傾き           constant
@@ -55,6 +55,30 @@ def main():
     #PF = lr.predict(X)
     PF = clf.predict(AX)
     plt.plot(PX,PF,color='blue')
+    plt.show()
+
+if main5():
+    x = np.array([100,120,150,170,200,200,202,203,205,210,215,250,270,300,305,310])
+    y = np.array([1,1,1,1,1,1,1,0.5,1,0,0,0,0,0,0,0])
+
+    plt.scatter(x,y)
+    plt.title("Pricing Bids")
+    plt.xlabel('Price')
+    plt.ylabel('Status (1:Won, 0:Lost)')
+
+    logreg = LogisticRegression(C=1.0, solver='lbfgs', multi_class='ovr')
+
+    X = x.reshape(-1,1)
+    logreg.fit(X, y)
+    logreg.predict(X)
+
+    prices = np.arange(100, 300, 0.5)
+    probabilities= []
+    for i in prices:
+        p_loss, p_win = logreg.predict_proba([[i]])[0]
+        probabilities.append(p_win)
+    plt.plot(prices,probabilities)
+    plt.scatter(x,y)
     plt.show()
 
 if __name__ == "__main__":

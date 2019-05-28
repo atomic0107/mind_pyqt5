@@ -57,9 +57,9 @@ def main():
     plt.plot(PX,PF,color='blue')
     plt.show()
 
-if main5():
+def main5():
     x = np.array([100,120,150,170,200,200,202,203,205,210,215,250,270,300,305,310])
-    y = np.array([1,1,1,1,1,1,1,0.5,1,0,0,0,0,0,0,0])
+    y = np.array([1,1,1,1,1,1,1,0,1,0,0,0,0,0,0,0])
 
     plt.scatter(x,y)
     plt.title("Pricing Bids")
@@ -77,9 +77,10 @@ if main5():
     for i in prices:
         p_loss, p_win = logreg.predict_proba([[i]])[0]
         probabilities.append(p_win)
+    
     plt.plot(prices,probabilities)
     plt.scatter(x,y)
     plt.show()
 
 if __name__ == "__main__":
-    main()
+    main5()

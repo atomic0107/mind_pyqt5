@@ -24,6 +24,8 @@ class Mindobj():
         self.lbl.bind('<Button-1>',self.mindobj_print)
         self.lbl.bind('<Double-Button-1>',self.edit_label)
         self.set_position()
+        print(self.lbl.cget("width"))
+        print(self.lbl.cget("height"))
 
     def set_position(self):
         self.lbl.place( x = self.posx ,y = self.posy )
@@ -36,6 +38,7 @@ class Mindobj():
         print("#### edit label ####")
         edit_x = event.widget.winfo_x()
         edit_y = event.widget.winfo_y()
+        print(event.widget.winfo_width())
         editbox = tkinter.Entry()
         editbox.insert(tkinter.END,self.temp_label[u"text"])
         editbox.place( x = edit_x,y = edit_y )
@@ -66,10 +69,10 @@ class Mindobj():
                 mdo.md_dict = self.md_dict["child"][str(i)]
                 mdo.md_dict.setdefault("id_parent",self)
                 mdo.md_dict.setdefault("id_object",mdo)
-                canvas.create_line(self.posx + self.lbl.winfo_width(),self.posy+ self.lbl.winfo_height(),cx,cy+mdo.lbl.winfo_height(),fill="blue", width=1, smooth=True) 
+                print( " label start point =\t" + str( self.posx )+"  +  "+ str( self.lbl.cget('width') ) )
+                canvas.create_line(self.posx + self.lbl.winfo_width()*35,self.posy+ self.lbl.winfo_height()*10,cx,cy+mdo.lbl.winfo_height()*10,fill="blue", width=1, smooth=True) 
                 #pprint.pprint(mdo.md_dict)
                 #mdo.lbl.place( x = cx ,y = cy )
-
 
 class Mind():
     def __init__(self):
@@ -116,7 +119,6 @@ def set_Mindobj(dict):
     #mdo.lbl.place( x = mdo.posx ,y = mdo.posy )
     mdo.birth_child()
     pprint.pprint(mind_dic)
-
 
 def main():
     global dic

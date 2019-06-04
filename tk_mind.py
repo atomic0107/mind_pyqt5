@@ -1,3 +1,7 @@
+"""
+
+
+"""
 import tkinter
 import json
 import pprint
@@ -7,18 +11,20 @@ bd_width = 500     #frame h
 bd_height = 500    #frame w
 center_x = bd_width/2
 center_y = bd_height/2
+TXT_W = 6
+TXT_H = 10
 dic = {}
-
-
 class Mindobj():
     md_dict={}
     posx=0
     posy=0
+    width=0
     def __init__(self,name,x,y):
         # super(Mindobj,self).__init__(md_dict)
         self.posx = x
         self.posy = y
         self.name = tkinter.StringVar()
+        self.width = len(name)*TXT_W
         self.name.set(name) 
         self.lbl=tkinter.Label(textvariable = self.name)
         self.lbl.bind('<Button-1>',self.mindobj_print)
@@ -53,8 +59,8 @@ class Mindobj():
         #vtext = self.md_dict["parent"] + "　→　" + text
         self.md_dict["parent"] = text
         self.name.set(text)
-        pprint.pprint(self.md_dict)
-        pprint.pprint(dic)
+        #pprint.pprint(self.md_dict)
+        #pprint.pprint(dic)
 
     def child_print(self):
         pprint.pprint(self.md_dict)
@@ -69,8 +75,7 @@ class Mindobj():
                 mdo.md_dict = self.md_dict["child"][str(i)]
                 mdo.md_dict.setdefault("id_parent",self)
                 mdo.md_dict.setdefault("id_object",mdo)
-                print( " label start point =\t" + str( self.posx )+"  +  "+ str( self.lbl.cget('width') ) )
-                canvas.create_line(self.posx + self.lbl.winfo_width()*35,self.posy+ self.lbl.winfo_height()*10,cx,cy+mdo.lbl.winfo_height()*10,fill="blue", width=1, smooth=True) 
+                canvas.create_line(self.posx + self.width,self.posy + TXT_H,mdo.posx,mdo.posy + TXT_H,fill="blue", width=1, smooth=True) 
                 #pprint.pprint(mdo.md_dict)
                 #mdo.lbl.place( x = cx ,y = cy )
 
@@ -81,7 +86,7 @@ class Mind():
         dic = json.load(f) #JSON形式で読み込む
         f.close()
         print("print read json!")
-        pprint.pprint(dic)
+        #pprint.pprint(dic)
         self.mind_dic = dic
 
     def mind_print(self):#読み込んだjsonを表示
@@ -118,7 +123,9 @@ def set_Mindobj(dict):
     #pprint.pprint(mdo.md_dict)
     #mdo.lbl.place( x = mdo.posx ,y = mdo.posy )
     mdo.birth_child()
-    pprint.pprint(mind_dic)
+    #pprint.pprint(mind_dic)
+
+
 
 def main():
     global dic
@@ -133,7 +140,24 @@ def main():
     
     root.mainloop()
 
+"""
+amin    : 描画開始位置
+amax    : 描画終了位置
+x       : xの標本数
+x0      : ?
+h       : 傾き
+s       : s > 0
+"""
+def curve_mind(amin,amax,x,x0,h,s):
+    y1 = amin
+    y2 = amax - amin
+    y3 = (x/x0)**(-1*h)
+    y4 = 1 + (y3**s)
+    f = y1 + ( y2 / y4 )
+    #f = (a*b)/(a+(b-a)*np.exp(-1*c*t))
+    return f
+
 if __name__ == "__main__":
     mind = Mind()
-    mind.mind_print()#読み込んだJSONを表示する
+    #mind.mind_print()#読み込んだJSONを表示する
     main()

@@ -12,10 +12,10 @@ def logistic_func_t1(a,b,c,t):
     return f
 
 """
-amin    : 出発地
-amax    : 到達地
+amin    : 描画開始位置
+amax    : 描画終了位置
 x       : xの標本数
-x0      : 
+x0      : ?
 h       : 傾き
 s       : s > 0
 """
@@ -27,7 +27,6 @@ def logistic_func_t2(amin,amax,x,x0,h,s):
     y4 = 1 + (y3**s)
     f = y1 + ( y2 / y4 )
     #f = (a*b)/(a+(b-a)*np.exp(-1*c*t))
-    
     return f
 
 

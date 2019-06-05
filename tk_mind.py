@@ -5,6 +5,8 @@
 import tkinter
 import json
 import pprint
+import numpy as np
+import math
 
 #dic = cl.OrderedDict()#順番付き辞書データ型
 bd_width = 500     #frame h
@@ -66,6 +68,7 @@ class Mindobj():
         pprint.pprint(self.md_dict)
     
     def birth_child(self):
+        
         if( len(self.md_dict["child"]) > 0 ):
             for i in range(len(self.md_dict["child"])):
                 cy = self.posy + i*25
@@ -75,7 +78,24 @@ class Mindobj():
                 mdo.md_dict = self.md_dict["child"][str(i)]
                 mdo.md_dict.setdefault("id_parent",self)
                 mdo.md_dict.setdefault("id_object",mdo)
-                canvas.create_line(self.posx + self.width,self.posy + TXT_H,mdo.posx,mdo.posy + TXT_H,fill="blue", width=1, smooth=True) 
+
+                linex = np.arange(self.posx + self.width,mdo.posx,0.1)
+                amin = self.posy + TXT_H#描画開始位置
+                amax = mdo.posy + TXT_H#描画終了位置
+                #xの標本数
+                x0 = self.posx + self.width + ( abs( ( self.posx + self.width ) - mdo.posx ) / 2 )
+                #傾き
+                h = 15
+                #s > 0
+                s = 5
+                f = []
+                for x in linex:
+                    y = curve_mind(amin,amax,x,x0,h,s)
+                    f.append(x)
+                    f.append(y)
+                print(f)
+                print(self.width)
+                canvas.create_line(f,fill="blue", width=1, smooth=False)
                 #pprint.pprint(mdo.md_dict)
                 #mdo.lbl.place( x = cx ,y = cy )
 

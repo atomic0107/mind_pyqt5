@@ -15,7 +15,7 @@ def logistic_func_t1(a,b,c,t):
 amin    : 描画開始位置
 amax    : 描画終了位置
 x       : xの標本数
-x0      : ?
+x0      : 傾き最大のｘの位置
 h       : 傾き
 s       : s > 0
 """
@@ -32,11 +32,11 @@ def logistic_func_t2(amin,amax,x,x0,h,s):
 
 def main():
 
-    x = np.arange(1, 300, 0.5) #not 0 start
+    x = np.arange(0, 5, 1) #not 0 start
     amin = [-9, -3, 3, 9]
     amax = [-10,-5,0, 5, 10]
     #amax=[0]
-    x0 = [75]#傾き最大のx座標
+    x0 = [2.5]#傾き最大のx座標
     #h = [-15,-10,-5,0, 5, 10, 15]#中心の傾き係数
     h=[15]
     s = 0.5# s > 0

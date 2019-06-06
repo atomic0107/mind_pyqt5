@@ -81,7 +81,7 @@ class Mindobj():
                 mdo.md_dict.setdefault("id_parent",self)
                 mdo.md_dict.setdefault("id_object",mdo)
 
-                linex = np.arange(self.posx ,mdo.posx,0.1)
+                linex = np.arange(self.posx ,mdo.posx,2)
                 amin = self.posy + TXT_H#描画開始位置
                 amax = mdo.posy + TXT_H#描画終了位置
                 #xの標本数
@@ -97,7 +97,7 @@ class Mindobj():
                     f.append(y)
                 #print(f)
                 #print(self.width)
-                canvas.create_line(f,fill="blue", width=1, smooth=False)
+                canvas.create_line(f,fill="blue", width=1, smooth=True)
                 #pprint.pprint(mdo.md_dict)
                 #mdo.lbl.place( x = cx ,y = cy )
 

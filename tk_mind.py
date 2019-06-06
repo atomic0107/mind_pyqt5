@@ -21,22 +21,25 @@ class Mindobj():
     posx=0
     posy=0
     width=0
+    global canvas
     def __init__(self,name,x,y):
         # super(Mindobj,self).__init__(md_dict)
+        self.canvas = canvas
         self.posx = x
         self.posy = y
         self.name = tkinter.StringVar()
         self.width = len(name)*TXT_W
         self.name.set(name) 
-        self.lbl=tkinter.Label(textvariable = self.name)
-        self.lbl.bind('<Button-1>',self.mindobj_print)
-        self.lbl.bind('<Double-Button-1>',self.edit_label)
+        self.tag = self.canvas.create_text(self.posx,self.posy,text = self.name.get())
+        self.canvas.tag_bind(self.tag,'<Button-1>',self.mindobj_print)
+        self.canvas.tag_bind(self.tag,'<Double-Button-1>',self.edit_label)
         self.set_position()
-        print(self.lbl.cget("width"))
-        print(self.lbl.cget("height"))
+        #print(self.lbl.cget("width"))
+        #print(self.lbl.cget("height"))
 
     def set_position(self):
-        self.lbl.place( x = self.posx ,y = self.posy )
+        #self.lbl.place( x = self.posx ,y = self.posy )\
+        pass
 
     def mindobj_print(self,event):
         print("click mind obj")
@@ -44,23 +47,23 @@ class Mindobj():
     def edit_label(self,event):
         self.temp_label = event.widget
         print("#### edit label ####")
-        edit_x = event.widget.winfo_x()
-        edit_y = event.widget.winfo_y()
-        print(event.widget.winfo_width())
+        #edit_x = event.widget.winfo_x()
+        #edit_y = event.widget.winfo_y()
+        #print(event.widget.winfo_width())
         editbox = tkinter.Entry()
-        editbox.insert(tkinter.END,self.temp_label[u"text"])
-        editbox.place( x = edit_x,y = edit_y )
+        editbox.insert(tkinter.END,self.name.get())
+        editbox.place( x = self.posx,y = self.posy )
         editbox.focus_set()#editbox active
         editbox.bind( '<Return>', self.update_label )#enter key
     
     def update_label(self,event):
         text = event.widget.get()
         event.widget.destroy()
-        print(self.md_dict)
-        
         #vtext = self.md_dict["parent"] + "　→　" + text
         self.md_dict["parent"] = text
         self.name.set(text)
+        self.canvas.delete(self.tag)
+        self.canvas.create_text(self.posx,self.posy,text = self.name.get())
         #pprint.pprint(self.md_dict)
         #pprint.pprint(dic)
 
@@ -68,7 +71,6 @@ class Mindobj():
         pprint.pprint(self.md_dict)
     
     def birth_child(self):
-        
         if( len(self.md_dict["child"]) > 0 ):
             for i in range(len(self.md_dict["child"])):
                 cy = self.posy + i*25
@@ -79,11 +81,11 @@ class Mindobj():
                 mdo.md_dict.setdefault("id_parent",self)
                 mdo.md_dict.setdefault("id_object",mdo)
 
-                linex = np.arange(self.posx + self.width,mdo.posx,0.1)
+                linex = np.arange(self.posx ,mdo.posx,0.1)
                 amin = self.posy + TXT_H#描画開始位置
                 amax = mdo.posy + TXT_H#描画終了位置
                 #xの標本数
-                x0 = self.posx + self.width + ( abs( ( self.posx + self.width ) - mdo.posx ) / 2 )
+                x0 = self.posx + ( abs( ( self.posx  ) - mdo.posx ) / 2 )
                 #傾き
                 h = 15
                 #s > 0
@@ -93,8 +95,8 @@ class Mindobj():
                     y = curve_mind(amin,amax,x,x0,h,s)
                     f.append(x)
                     f.append(y)
-                print(f)
-                print(self.width)
+                #print(f)
+                #print(self.width)
                 canvas.create_line(f,fill="blue", width=1, smooth=False)
                 #pprint.pprint(mdo.md_dict)
                 #mdo.lbl.place( x = cx ,y = cy )
@@ -154,17 +156,15 @@ def main():
     root.title("tkinter test")
     canvas = tkinter.Canvas( width = bd_width, height = bd_height)
     root.geometry( str(bd_width) + "x" + str(bd_height))
-    
     set_Mindobj(dic)
     canvas.pack()#canvas set object
-    
     root.mainloop()
 
 """
 amin    : 描画開始位置
 amax    : 描画終了位置
 x       : xの標本数
-x0      : ?
+x0      : 傾きが最大になるx座標
 h       : 傾き
 s       : s > 0
 """

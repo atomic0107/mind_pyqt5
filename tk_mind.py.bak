@@ -1,5 +1,6 @@
 """
 
+
 """
 import tkinter
 import json
@@ -7,6 +8,7 @@ import pprint
 import numpy as np
 import math
 
+#dic = cl.OrderedDict()#順番付き辞書データ型
 bd_width = 500     #frame h
 bd_height = 500    #frame w
 center_x = bd_width/2
@@ -93,10 +95,13 @@ class Mind():
         dic = json.load(f) #JSON形式で読み込む
         f.close()
         print("print read json!")
+        #pprint.pprint(dic)
         self.mind_dic = dic
 
     def mind_print(self):#読み込んだjsonを表示
         print("hello my mind world!!")
+        #pprint.pprint(self.mind_dic)
+        #print(len(self.mind_dic["0"]["child"]))
 
 def set_Mindobj(dict):
     mind_dic = dict
@@ -123,7 +128,13 @@ def set_Mindobj(dict):
     mdo = Mindobj(mind_dic[str(i)]["parent"],cx,cy)
     mdo.md_dict = mind_dic[str(i)]
     mdo.md_dict.setdefault("id_object",mdo)
+    #mdo.child_print()
+    #pprint.pprint(mdo.md_dict)
+    #mdo.lbl.place( x = mdo.posx ,y = mdo.posy )
     mdo.birth_child()
+    #pprint.pprint(mind_dic)
+
+
 
 def main():
     global dic

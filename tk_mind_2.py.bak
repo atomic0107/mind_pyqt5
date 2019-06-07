@@ -84,7 +84,7 @@ class Mindobj():
                     y = curve_mind(amin,amax,x,x0,h,s)
                     f.append(x)
                     f.append(y)
-                canvas.create_line(f,fill="blue", width=1, smooth=True)
+                canvas.create_line(f,fill="blue", width=1, smooth=False)
 
 class Mind():
     def __init__(self):

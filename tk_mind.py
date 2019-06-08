@@ -32,15 +32,34 @@ class Mindobj():
         self.width = len(name)*TXT_W
         self.name.set(name) 
         self.tag = self.canvas.create_text(self.posx,self.posy,text = self.name.get())
-        self.canvas.tag_bind(self.tag,'<Button-1>',self.mindobj_print)
+        self.canvas.tag_bind(self.tag,'<Button-1>',self.click)
         self.canvas.tag_bind(self.tag,'<Double-Button-1>',self.edit_label)
         self.set_position()
 
     def set_position(self):
         pass
 
-    def mindobj_print(self,event):
+    def click(self,event):
         print("click mind obj")
+        self.canvas.bind('<Tab>',self.redraw)
+
+    def redraw(self,event):
+        global dic
+        num = str(0)
+        if self.md_dict.get("child"):
+            num = str(len(self.md_dict["child"]))
+        self.md_dict.setdefault("child",{})
+        self.md_dict["child"].setdefault(num,{})
+        self.md_dict["child"][num].setdefault("parent"," ")
+        #self.md_dict["child"][num].setdefault("child",{})
+
+        self.canvas.delete("all")
+        cy = center_y
+        cx = center_x
+        mdo = Mindobj(dic["0"]["parent"],cx,cy)
+        mdo.md_dict = dic["0"]
+        mdo.md_dict.setdefault("id_object",mdo)
+        mdo.birth_child()
     
     def edit_label(self,event):
         self.temp_label = event.widget
@@ -118,10 +137,10 @@ def set_Mindobj(dict):
             print(child_mind_dic[str(k)])
             set_Mindobj(child_mind_dic[str(k)]["child"])
     """
-    cy = center_y + i * 25
-    cx = center_x + j
-    mdo = Mindobj(mind_dic[str(i)]["parent"],cx,cy)
-    mdo.md_dict = mind_dic[str(i)]
+    cy = center_y
+    cx = center_x
+    mdo = Mindobj(mind_dic["0"]["parent"],cx,cy)
+    mdo.md_dict = mind_dic["0"]
     mdo.md_dict.setdefault("id_object",mdo)
     mdo.birth_child()
 

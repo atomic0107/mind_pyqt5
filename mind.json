@@ -7,6 +7,9 @@
                 "child": {
                     "0":{
                         "parent": "tomohiro"
+                    },
+                    "1":{
+                        "parent": "tomohiro"
                     }
                 }
             },

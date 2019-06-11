@@ -50,10 +50,10 @@ class Mindobj():
             num = str(len(self.md_dict["child"]))
         self.md_dict.setdefault("child",{})
         self.md_dict["child"].setdefault(num,{})
-        self.md_dict["child"][num].setdefault("parent"," ")
+        self.md_dict["child"][num].setdefault("parent","      ")
         #self.md_dict["child"][num].setdefault("child",{})
-
         self.canvas.delete("all")
+
         cy = center_y
         cx = center_x
         mdo = Mindobj(dic["0"]["parent"],cx,cy)
@@ -83,9 +83,16 @@ class Mindobj():
     
     def birth_child(self):
         if( self.md_dict.get("child") ):
+
             for i in range(len(self.md_dict["child"])):
-                cy = self.posy - ( Child_width * (len(self.md_dict["child"])- 1) / 2.0 ) + i * Child_width
+                dup_height = 0
+                if( self.md_dict["child"][str(i)].get("child")):
+                    dup_height = (len(self.md_dict["child"][str(i)]["child"])-1)*TXT_H
+                #self.posy = dup_height
+                cy = self.posy - dup_height - ( Child_width * (len(self.md_dict["child"]) - 1) / 2.0 ) + i * Child_width
+                #cy = self.posy + dup_height - ( Child_width * (len(self.md_dict["child"]) - 1) / 2.0 ) + i * Child_width                
                 cx = self.posx + PC_width
+
                 mdo = Mindobj(self.md_dict["child"][str(i)]["parent"],cx,cy)
                 mdo.md_dict = self.md_dict["child"][str(i)]
                 mdo.md_dict.setdefault("id_parent",self)

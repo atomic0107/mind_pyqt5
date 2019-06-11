@@ -80,10 +80,19 @@ class Mindobj():
 
     def child_print(self):
         pprint.pprint(self.md_dict)
-    
+
+    def analyze_position(self):
+        #global pos_begun_y
+        #global pos_last_y
+        pos_begun_y = self.posy
+        pos_last_y = self.posy
+        if(self.md_dict.get("child")):
+            pos_begun_y = self.md_dict["child"]["0"]["id_object"].posy
+            pos_last_y = self.md_dict["child"][str(len(self.md_dict["child"])-1)]["id_object"].posy
+        print(self.md_dict["parent"]+"\t"+str(pos_begun_y) + "\t" + str(pos_last_y))
+
     def birth_child(self):
         if( self.md_dict.get("child") ):
-
             for i in range(len(self.md_dict["child"])):
                 dup_height = 0
                 if( self.md_dict["child"][str(i)].get("child")):
@@ -93,7 +102,8 @@ class Mindobj():
                 #cy = self.posy + dup_height - ( Child_width * (len(self.md_dict["child"]) - 1) / 2.0 ) + i * Child_width                
                 cx = self.posx + PC_width
 
-                mdo = Mindobj(self.md_dict["child"][str(i)]["parent"],cx,cy)
+                #mdo = Mindobj(self.md_dict["child"][str(i)]["parent"],cx,cy)
+                mdo = Mindobj(str(cy),cx,cy)
                 mdo.md_dict = self.md_dict["child"][str(i)]
                 mdo.md_dict.setdefault("id_parent",self)
                 mdo.md_dict.setdefault("id_object",mdo)
@@ -111,6 +121,7 @@ class Mindobj():
                     f.append(x)
                     f.append(y)
                 canvas.create_line(f,fill="blue", width=1, smooth=True)
+                mdo.analyze_position()
 
 class Mind():
     def __init__(self):
@@ -128,25 +139,10 @@ def set_Mindobj(dict):
     mind_dic = dict
     print("----------set_Mindobj()---------")
     print("parent = " + str(len(mind_dic)))
-    j = 0
-    i = 0
-    """
-    for i in range(len(mind_dic)):
-        cy = center_y + i * 25
-        cx = center_x + j
-        lbl = Mindobj(text = mind_dic[str(i)]["parent"])
-        lbl.place( x = cx ,y = cy )
-        print("child = " + str(len(mind_dic[str(i)]["child"])))
-        if( len(mind_dic[str(i)]["child"]) > 0 ):
-            child_mind_dic = mind_dic[str(i)]["child"]
-            j = 100
-            k = i+1
-            print(child_mind_dic[str(k)])
-            set_Mindobj(child_mind_dic[str(k)]["child"])
-    """
     cy = center_y
     cx = center_x
-    mdo = Mindobj(mind_dic["0"]["parent"],cx,cy)
+    #mdo = Mindobj(mind_dic["0"]["parent"],cx,cy)
+    mdo = Mindobj(str(cy),cx,cy)
     mdo.md_dict = mind_dic["0"]
     mdo.md_dict.setdefault("id_object",mdo)
     mdo.birth_child()

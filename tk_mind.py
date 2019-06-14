@@ -147,13 +147,25 @@ def set_Mindobj(dict):
     mdo.md_dict.setdefault("id_object",mdo)
     mdo.birth_child()
 
+def on_resize(event):
+    global canvas
+    global bd_height
+    global bd_width
+    global root
+    bd_width = event.width
+    bd_height = event.height
+    canvas.config( width = bd_height , height = bd_width )
+    root.geometry( str(bd_width) + "x" + str(bd_height))
+
 def main():
     global dic
     global canvas
+    global root
     root = tkinter.Tk()
     root.title("tkinter test")
     canvas = tkinter.Canvas( width = bd_width, height = bd_height)
     root.geometry( str(bd_width) + "x" + str(bd_height))
+    canvas.bind("configure",on_resize)
     set_Mindobj(dic)
     canvas.pack()#canvas set object
     root.mainloop()

@@ -60,6 +60,7 @@ class Mindobj():
         mdo.md_dict = dic["0"]
         mdo.md_dict.setdefault("id_object",mdo)
         mdo.birth_child()
+        pprint.pprint(dic ,indent=4)
     
     def edit_label(self,event):
         self.temp_label = event.widget
@@ -82,8 +83,6 @@ class Mindobj():
         pprint.pprint(self.md_dict)
 
     def analyze_position(self):
-        #global pos_begun_y
-        #global pos_last_y
         pos_begun_y = self.posy
         pos_last_y = self.posy
         if(self.md_dict.get("child")):
@@ -99,7 +98,7 @@ class Mindobj():
                     dup_height = (len(self.md_dict["child"][str(i)]["child"])-1)*TXT_H
                 #self.posy = dup_height
                 cy = self.posy - dup_height - ( Child_width * (len(self.md_dict["child"]) - 1) / 2.0 ) + i * Child_width
-                #cy = self.posy + dup_height - ( Child_width * (len(self.md_dict["child"]) - 1) / 2.0 ) + i * Child_width                
+                #cy = self.posy + dup_height - ( Child_width * (len(self.md_dict["child"]) - 1) / 2.0 ) + i * Child_width
                 cx = self.posx + PC_width
 
                 #mdo = Mindobj(self.md_dict["child"][str(i)]["parent"],cx,cy)
@@ -109,7 +108,7 @@ class Mindobj():
                 mdo.md_dict.setdefault("id_object",mdo)
                 mdo.birth_child()
 
-                linex = np.arange(self.posx ,mdo.posx,1)#xの標本数
+                linex = np.arange(self.posx ,mdo.posx,2)#xの標本数
                 amin = self.posy + TXT_H#描画開始位置
                 amax = mdo.posy + TXT_H#描画終了位置
                 x0 = self.posx + ( abs( ( self.posx  ) - mdo.posx ) / 2 )#傾き最大位置
@@ -152,10 +151,10 @@ def on_resize(event):
     global bd_height
     global bd_width
     global root
+
     bd_width = event.width
     bd_height = event.height
-    canvas.config( width = bd_height , height = bd_width )
-    root.geometry( str(bd_width) + "x" + str(bd_height))
+    canvas.config( width = bd_width , height = bd_height )
 
 def main():
     global dic
@@ -165,7 +164,7 @@ def main():
     root.title("tkinter test")
     canvas = tkinter.Canvas( width = bd_width, height = bd_height)
     root.geometry( str(bd_width) + "x" + str(bd_height))
-    canvas.bind("configure",on_resize)
+    canvas.bind("<Configure>",on_resize)
     set_Mindobj(dic)
     canvas.pack()#canvas set object
     root.mainloop()

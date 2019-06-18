@@ -3,21 +3,21 @@
         "parent": "root",
         "child": {
             "0": {
-                "parent": "udagawa",
+                "parent": "C",
                 "child": {
                     "0":{
-                        "parent": "tomohiro"
+                        "parent": "C++"
                     },
                     "1":{
-                        "parent": "tomohiro"
+                        "parent": "Python"
                     }
                 }
             },
             "1": {
-                "parent": "tomohiro"
+                "parent": "Java"
             },
             "2": {
-                "parent": "sawako"
+                "parent": "Go"
             }
         }
     }

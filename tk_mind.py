@@ -83,12 +83,20 @@ class Mindobj():
         pprint.pprint(self.md_dict)
 
     def analyze_position(self):
-        pos_begun_y = self.posy
-        pos_last_y = self.posy
+        
         if(self.md_dict.get("child")):
-            pos_begun_y = self.md_dict["child"]["0"]["id_object"].posy
-            pos_last_y = self.md_dict["child"][str(len(self.md_dict["child"])-1)]["id_object"].posy
-        print(self.md_dict["parent"]+"\t"+str(pos_begun_y) + "\t" + str(pos_last_y))
+            for i in range(len(self.md_dict["child"])):
+                #子供がいる
+                if(self.md_dict["child"][str(i)].get("child")):
+                    self.md_dict["child"][str(i)]["id_object"].analyze_position()
+                #子供がいない
+                else:
+                    self.md_dict["child"][str(i)].setdefault("witdh",TXT_H)
+                    print(self.md_dict["child"][str(i)]["parent"]+"\t"+str(self.md_dict["child"][str(i)]["witdh"]))
+        else:
+            self.md_dict.setdefault("witdh",TXT_H)
+            print(self.md_dict["parent"]+"\t"+str(self.md_dict["witdh"]))
+
 
     def birth_child(self):
         if( self.md_dict.get("child") ):
@@ -96,9 +104,8 @@ class Mindobj():
                 dup_height = 0
                 if( self.md_dict["child"][str(i)].get("child")):
                     dup_height = (len(self.md_dict["child"][str(i)]["child"])-1)*TXT_H
-                #self.posy = dup_height
+                
                 cy = self.posy - dup_height - ( Child_width * (len(self.md_dict["child"]) - 1) / 2.0 ) + i * Child_width
-                #cy = self.posy + dup_height - ( Child_width * (len(self.md_dict["child"]) - 1) / 2.0 ) + i * Child_width
                 cx = self.posx + PC_width
 
                 #mdo = Mindobj(self.md_dict["child"][str(i)]["parent"],cx,cy)
@@ -106,6 +113,7 @@ class Mindobj():
                 mdo.md_dict = self.md_dict["child"][str(i)]
                 mdo.md_dict.setdefault("id_parent",self)
                 mdo.md_dict.setdefault("id_object",mdo)
+                mdo.analyze_position()
                 mdo.birth_child()
 
                 linex = np.arange(self.posx ,mdo.posx,2)#xの標本数
@@ -120,7 +128,7 @@ class Mindobj():
                     f.append(x)
                     f.append(y)
                 canvas.create_line(f,fill="blue", width=1, smooth=True)
-                mdo.analyze_position()
+                
 
 class Mind():
     def __init__(self):
